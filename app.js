@@ -17,10 +17,13 @@ app.use(bodyParser.json());
 var bookRouter = express.Router();
 bookRouter.route('/Books')
     .post(function(req,res){
-        var book = new Book(req.body);
+        var book = new Book(req.body);// creating a mongoose instance of that book
+        //we need to save the book
+        book.save();
 
-        console.log(book)
-        res.send(book);
+
+        //console.log(book)
+        res.status(201).send(book);
 
     })
     .get(function(req,res){
