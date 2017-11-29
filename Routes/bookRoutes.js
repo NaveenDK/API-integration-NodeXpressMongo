@@ -81,6 +81,16 @@ bookRouter.route('/:bookId')
                 }
             });
         })
+        .delete(function(req,res){
+            req.book.remove(function(req,res){
+                if(err)
+                   res.status(500).send(err);
+                else{
+                    res.status(204).send('Removed');
+                        
+                }
+            })
+        })
 return bookRouter;
 };
 
