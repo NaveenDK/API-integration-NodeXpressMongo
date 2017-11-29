@@ -2,36 +2,11 @@ var express = require('express');
 
 var routes = function(Book){
 var bookRouter = express.Router();
+var bookController = require('../controllers/bookController')(Book);
 bookRouter.route('/')
-    .post(function(req,res){
-        var book = new Book(req.body);// creating a mongoose instance of that book
-        //we need to save the book after posting 
-        book.save();
-        //console.log(book)
-        res.status(201).send(book);
 
-    })
-    .get(function(req,res){
-
-        var query = {};
-        if(req.query.genre)
-        {
-            query.genre= req.query.genre;
-        }
-
-           Book.find(function(err,books){
-               if(err)
-                  res.status(500).send(err);
-               else
-                res.json(books);
-           });
-            
-    });
-
-
-
-
-
+    .post(bookController.post) 
+    .get(bookController.get);
 
 bookRouter.use('/:bookId',function(req,res,next){
    Book.findById(req.params.bookId,function(err,book){
@@ -87,7 +62,7 @@ bookRouter.route('/:bookId')
                    res.status(500).send(err);
                 else{
                     res.status(204).send('Removed');
-                        
+
                 }
             })
         })
